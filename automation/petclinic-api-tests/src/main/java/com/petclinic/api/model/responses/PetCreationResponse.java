@@ -2,6 +2,7 @@ package com.petclinic.api.model.responses;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.petclinic.api.model.enums.PetStatus;
 import lombok.Data;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class PetCreationResponse {
     private List<Tag> tags;
 
     @JsonProperty("status")
-    private String status;
+    private PetStatus status;
 
     @Data
     @JsonInclude(JsonInclude.Include.NON_NULL)

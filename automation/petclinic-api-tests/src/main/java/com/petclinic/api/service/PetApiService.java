@@ -1,8 +1,8 @@
 package com.petclinic.api.service;
 
+import com.petclinic.api.assertions.AssertableResponse;
 import com.petclinic.api.model.payloads.PetPayload;
 import com.petclinic.api.model.responses.PetCreationResponse;
-import com.petclinic.api.response.AssertableResponse;
 
 import java.util.Map;
 

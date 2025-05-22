@@ -1,9 +1,9 @@
 package com.petclinic.api.tests;
 
-import com.github.javafaker.Faker;
+import com.petclinic.api.assertions.AssertableResponse;
+import com.petclinic.api.model.enums.PetStatus;
 import com.petclinic.api.model.payloads.PetPayload;
 import com.petclinic.api.model.responses.PetCreationResponse;
-import com.petclinic.api.response.AssertableResponse;
 import com.petclinic.api.service.PetApiService;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -22,17 +22,18 @@ import static org.hamcrest.text.IsEmptyString.emptyOrNullString;
 public class PetApiTest extends BaseTest {
 
     private PetApiService petApiService;
-    private Faker faker;
     private PetPayload petPayload;
 
     @BeforeClass
     public void setUp() {
         petApiService = new PetApiService();
-        faker = new Faker();
+        initializePetPayload();
+    }
 
+    protected void initializePetPayload() {
         petPayload = PetPayload.builder()
-                .id(faker.random().nextInt(1, 100000))
-                .name(faker.funnyName().name())
+                .id(getFaker().random().nextInt(1, 100000))
+                .name(getFaker().funnyName().name())
                 .category(PetPayload.Category.builder()
                         .id(1)
                         .name("Dogs")
@@ -42,23 +43,24 @@ public class PetApiTest extends BaseTest {
                         .id(1)
                         .name("friendly")
                         .build()))
-                .status("available")
+                .status(PetStatus.AVAILABLE)
                 .build();
     }
 
-    @Test
-    public void testCreateAndGetPet() {
-        // Створення улюбленця
-        AssertableResponse createResponse = petApiService.createPet(petPayload);
-        createResponse
+    protected PetCreationResponse createPet() {
+        return petApiService.createPet(petPayload)
                 .shouldHave(statusCode(200))
                 .shouldHave(contentType("application/json"))
                 .shouldHave(bodyField("id", not(emptyOrNullString())))
                 .shouldHave(bodyField("name", equalTo(petPayload.getName())))
-                .shouldHave(bodyField("status", equalTo(petPayload.getStatus())));
+                .shouldHave(bodyField("status", equalTo(petPayload.getStatus().getValue())))
+                .as(PetCreationResponse.class);
+    }
 
-        // Отримання ID створеного улюбленця
-        PetCreationResponse createdPet = createResponse.getResponse().as(PetCreationResponse.class);
+
+    @Test
+    public void testCreateAndGetPet() {
+        PetCreationResponse createdPet = createPet();
 
         // Отримання улюбленця за ID
         AssertableResponse getResponse = petApiService.getPetById(createdPet.getId());
@@ -67,15 +69,14 @@ public class PetApiTest extends BaseTest {
                 .shouldHave(contentType("application/json"))
                 .shouldHave(bodyField("id", equalTo(createdPet.getId())))
                 .shouldHave(bodyField("name", equalTo(createdPet.getName())))
-                .shouldHave(bodyField("status", equalTo(createdPet.getStatus())))
+                .shouldHave(bodyField("status", equalTo(createdPet.getStatus().getValue())))
                 .shouldHave(bodyField("category.name", equalTo(createdPet.getCategory().getName())));
     }
 
     @Test
     public void testUpdatePetStatus() {
         // Створення улюбленця
-        AssertableResponse createResponse = petApiService.createPet(petPayload);
-        PetCreationResponse createdPet = createResponse.getResponse().as(PetCreationResponse.class);
+        PetCreationResponse createdPet = createPet();
 
         // Оновлення статусу
         String newStatus = "sold";
@@ -94,7 +95,7 @@ public class PetApiTest extends BaseTest {
     @Test
     public void testFindPetsByStatus() {
         // Пошук улюбленців за статусом
-        AssertableResponse response = petApiService.findPetsByStatus("available");
+        AssertableResponse response = petApiService.findPetsByStatus(PetStatus.AVAILABLE.getValue());
         response
                 .shouldHave(statusCode(200))
                 .shouldHave(contentType("application/json"))
@@ -103,14 +104,13 @@ public class PetApiTest extends BaseTest {
         // Перевірка, що всі улюбленці мають правильний статус
         assertThat(response.getResponse().jsonPath().getList("status"))
                 .as("Перевірка статусу всіх улюбленців")
-                .allMatch(status -> status.equals("available"));
+                .allMatch(status -> status.equals(PetStatus.AVAILABLE.getValue()));
     }
 
     @Test
     public void testDeletePet() {
         // Створення улюбленця
-        AssertableResponse createResponse = petApiService.createPet(petPayload);
-        Integer petId = createResponse.getResponse().jsonPath().getInt("id");
+        Integer petId = createPet().getId();
 
         // Видалення улюбленця
         AssertableResponse deleteResponse = petApiService.deletePet(petId);

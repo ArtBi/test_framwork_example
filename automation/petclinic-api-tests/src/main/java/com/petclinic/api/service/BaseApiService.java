@@ -1,13 +1,19 @@
 package com.petclinic.api.service;
 
-import com.petclinic.api.response.AssertableResponse;
+import com.petclinic.api.assertions.AssertableResponse;
 import io.restassured.RestAssured;
+import io.restassured.filter.Filter;
+import io.restassured.filter.log.RequestLoggingFilter;
+import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
 import java.util.Map;
 
+@Slf4j
 public abstract class BaseApiService {
     //    private static final String BASE_URL = "http://petclinic.swagger.io/v2";
     private static final String BASE_URL = "http://localhost:8080/api/v3";
@@ -20,8 +26,17 @@ public abstract class BaseApiService {
         return RestAssured.given()
                 .contentType(ContentType.JSON)
                 .accept(ContentType.JSON)
-                .log()
-                .all();
+                .filters(getFilters());
+    }
+
+    private List<Filter> getFilters() {
+        boolean enableLogging = Boolean.parseBoolean(System.getProperty("logging", "true"));
+        if (enableLogging) {
+            log.info("Enabling logging");
+            return List.of(new RequestLoggingFilter(), new ResponseLoggingFilter());
+        } else {
+            return List.of();
+        }
     }
 
     protected AssertableResponse get(String endpoint) {
@@ -45,8 +60,7 @@ public abstract class BaseApiService {
         Response response = setup()
                 .body(body)
                 .when()
-                .post(endpoint)
-                .then().log().all().extract().response();
+                .post(endpoint);
         return new AssertableResponse(response);
     }
 
@@ -55,8 +69,7 @@ public abstract class BaseApiService {
                 .pathParams(pathParams)
                 .queryParams(queryParams)
                 .when()
-                .post(endpoint)
-                .then().log().all().extract().response();
+                .post(endpoint);
         return new AssertableResponse(response);
     }
 
@@ -64,8 +77,7 @@ public abstract class BaseApiService {
         Response response = setup()
                 .body(body)
                 .when()
-                .put(endpoint)
-                .then().log().all().extract().response();
+                .put(endpoint);
         return new AssertableResponse(response);
     }
 
@@ -73,8 +85,7 @@ public abstract class BaseApiService {
         Response response = setup()
                 .pathParams(pathParams)
                 .when()
-                .delete(endpoint)
-                .then().log().all().extract().response();
+                .delete(endpoint);
         return new AssertableResponse(response);
     }
-} 
+}

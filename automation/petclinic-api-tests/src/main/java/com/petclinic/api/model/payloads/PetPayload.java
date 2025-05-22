@@ -1,12 +1,17 @@
 package com.petclinic.api.model.payloads;
 
+import com.petclinic.api.model.enums.PetStatus;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class PetPayload {
 
     private Integer id;
@@ -19,10 +24,12 @@ public class PetPayload {
 
     private List<Tag> tags;
 
-    private String status;
+    private PetStatus status;
 
     @Data
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Category {
         private Integer id;
 
@@ -31,6 +38,8 @@ public class PetPayload {
 
     @Data
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Tag {
         private Integer id;
 

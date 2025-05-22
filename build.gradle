@@ -1,11 +1,14 @@
 plugins {
     id 'java'
     id 'io.qameta.allure' version '2.12.0'
+    id 'com.diffplug.spotless' version '6.25.0'
 }
 
+
 allprojects {
-    group = 'com.petclinic'
+    group = 'io.artbi.aqa.templates'
     version = '1.0-SNAPSHOT'
+
 
     repositories {
         mavenCentral()
@@ -13,67 +16,132 @@ allprojects {
     }
 }
 
+ext {
+    // Версії залежностей
+    restAssuredVersion = '5.4.0'
+    lombokVersion = '1.18.30'
+    slf4jVersion = '2.0.11'
+    logbackVersion = '1.4.14'
+    assertjVersion = '3.25.3'
+    testngVersion = '7.9.0'
+    allureVersion = '2.25.0'
+    jacksonVersion = '2.18.2'
+    hamcrestVersion = '2.2'
+    jsonVersion = '20231013'
+    jsonPathVersion = '2.8.0'
+    ownerVersion = '1.0.12'
+    javaFakerVersion = '1.0.2'
+}
+
+
 subprojects {
     apply plugin: 'java'
     apply plugin: 'io.qameta.allure'
+    apply plugin: 'com.diffplug.spotless'
 
     java {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
 
+    spotless {
+        java {
+            googleJavaFormat()
+            removeUnusedImports()
+            trimTrailingWhitespace()
+            endWithNewline()
+        }
+    }
+
     dependencies {
         // API Testing
-        implementation 'io.rest-assured:rest-assured:5.4.0'
-        implementation 'io.rest-assured:json-schema-validator:5.4.0'
-        implementation 'org.hamcrest:hamcrest:2.2'
-        implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.2'
+        implementation "io.rest-assured:rest-assured:${restAssuredVersion}"
+        implementation "io.rest-assured:json-schema-validator:${restAssuredVersion}"
+        implementation "org.hamcrest:hamcrest:${hamcrestVersion}"
+        implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
 
-        // Базові залежності
-        compileOnly 'org.projectlombok:lombok:1.18.30'
-        annotationProcessor 'org.projectlombok:lombok:1.18.30'
+        // Base dependencies
+        compileOnly "org.projectlombok:lombok:${lombokVersion}"
+        annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
-        // Логування
-        implementation 'org.apache.logging.log4j:log4j-api:2.22.1'
-        implementation 'org.apache.logging.log4j:log4j-core:2.22.1'
-        implementation 'org.slf4j:slf4j-api:2.0.11'
-        implementation 'org.apache.logging.log4j:log4j-slf4j2-impl:2.22.1'
+        // Logging
+        implementation "org.slf4j:slf4j-api:${slf4jVersion}"
+        implementation "ch.qos.logback:logback-classic:${logbackVersion}"
 
-        // AssertJ для основного коду
-        implementation 'org.assertj:assertj-core:3.25.3'
+        implementation "org.assertj:assertj-core:${assertjVersion}"
 
-        // Тестові залежності
-        testImplementation 'org.testng:testng:7.9.0'
-        testImplementation 'io.qameta.allure:allure-testng:2.25.0'
+        // Test dependencies
+        testImplementation "org.testng:testng:${testngVersion}"
+        testImplementation "io.qameta.allure:allure-testng:${allureVersion}"
 
-        implementation 'com.github.javafaker:javafaker:1.0.2'
+        implementation "com.github.javafaker:javafaker:${javaFakerVersion}"
     }
 
     test {
-        useTestNG()
+        useTestNG() {
+//            options.suites 'src/test/resources/testng.xml'
+            options.parallel = 'class'
+            options.threadCount = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
+        }
+
+        testLogging {
+            events "passed", "skipped", "failed"
+            showStandardStreams = true
+            showExceptions = true
+            showCauses = true
+            showStackTraces = false
+        }
+
         systemProperty 'allure.results.directory', "${buildDir}/allure-results"
     }
 }
 
 project(':automation:common') {
     dependencies {
-
         // JSON
-        implementation 'com.fasterxml.jackson.core:jackson-databind:2.16.1'
-        implementation 'org.json:json:20231013'
-        implementation 'com.jayway.jsonpath:json-path:2.8.0'
+        implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+        implementation "org.json:json:${jsonVersion}"
+        implementation "com.jayway.jsonpath:json-path:${jsonPathVersion}"
 
-
-        // Конфігурація
-        implementation 'org.aeonbits.owner:owner:1.0.12'
+        // Configuration
+        implementation "org.aeonbits.owner:owner:${ownerVersion}"
     }
 }
 
 project(':automation:petclinic-api-tests') {
     dependencies {
         implementation project(':automation:common')
-
-        // Додаємо явну залежність Rest Assured
-        implementation 'io.rest-assured:json-schema-validator:5.4.0'
     }
+
+    // Add task for running API tests only
+    task apiTests(type: Test) {
+        description = 'Runs the API tests'
+        group = 'verification'
+
+        useTestNG() {
+            // API test settings
+            options.suites 'src/test/resources/testng.xml'
+        }
+
+        // Pass needed system properties  
+        systemProperty 'api.base.url', System.getProperty('api.base.url', 'http://localhost:8080/api/v3')
+        systemProperty 'api.timeout', System.getProperty('api.timeout', '10000')
+    }
+}
+
+// Add task for running all tests from different modules
+task allTests {
+    description = 'Run all tests from all subprojects'
+    group = 'verification'
+
+    dependsOn subprojects.collect { it.tasks.withType(Test) }
+}
+
+// Add task for cleaning Allure reports before each run
+task cleanAllureResults(type: Delete) {
+    description = 'Clean Allure results directory'
+    group = 'reporting'
+
+    delete fileTree(dir: 'build/allure-results')
+    delete fileTree(dir: 'build/allure-report')
 }
