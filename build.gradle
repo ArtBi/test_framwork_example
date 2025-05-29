@@ -131,10 +131,6 @@ project(':automation:petstore-api-tests') {
             // API test settings
             options.suites 'src/test/resources/testng.xml'
         }
-
-        // Pass needed system properties  
-        systemProperty 'api.base.url', System.getProperty('api.base.url', 'http://localhost:8080/api/v3')
-        systemProperty 'api.timeout', System.getProperty('api.timeout', '10000')
     }
 }
 

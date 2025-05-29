@@ -1,183 +1,192 @@
-# Шаблон проекту для тестування веб-додатку
+# API Testing Framework Template
 
-Цей проект є шаблоном для тестування веб-додатку книжкового магазину. Він включає в себе як API, так і UI тести, а також
-необхідну інфраструктуру для їх виконання.
+A comprehensive template for API testing using Java, REST Assured, and TestNG. This project provides a structured
+approach to API testing with a focus on the Swagger Petstore API as an example.
 
-## Технічний стек
+## Features
 
-- Java 21
-- Gradle 8.5
+- **Modular Architecture**: Clean separation of concerns with service, model, and test layers
+- **Fluent Assertions**: Custom assertion mechanism for readable test validations
+- **Docker Integration**: TestContainers support for isolated testing environments
+- **Configurable**: Environment-specific configuration with property files and .env support
+- **Reporting**: Allure reports for comprehensive test results visualization
+- **Logging**: Detailed logging with Logback
+- **Data Generation**: Realistic test data generation with JavaFaker
+
+## Tech Stack
+
+- Java 17
+- Gradle 8.5+
 - TestNG 7.9.0
 - REST Assured 5.4.0
-- Playwright 1.42.0
 - Allure 2.25.0
-- Log4j2 2.22.1
+- Logback 1.4.14
+- TestContainers 1.19.7
+- JavaFaker 1.0.2
 
-## Структура проекту
+## Project Structure
 
 ```
 .
-├── apps/
-│   ├── api/                 # Spring Boot додаток (бекенд)
-│   └── web/                 # Веб-інтерфейс
 ├── automation/
-│   ├── api-tests/          # API тести
-│   │   ├── src/
-│   │   │   ├── main/
-│   │   │   └── test/
-│   │   │       ├── java/
-│   │   │       │   └── com/
-│   │   │       │       └── bookstore/
-│   │   │       │           └── api/
-│   │   │       │               └── tests/
-│   │   │       │                   ├── auth/
-│   │   │       │                   ├── catalog/
-│   │   │       │                   ├── cart/
-│   │   │       │                   ├── order/
-│   │   │       │                   └── profile/
-│   │   │       └── resources/
-│   │   │           ├── testng.xml
-│   │   │           └── log4j2.xml
-│   └── web-tests/          # UI тести
+│   ├── common/                # Common utilities and shared code
+│   └── petstore-api-tests/    # API tests for Petstore API
 │       ├── src/
 │       │   ├── main/
+│       │   │   ├── java/
+│       │   │   │   └── com/petclinic/api/
+│       │   │   │       ├── assertions/     # Custom assertion classes
+│       │   │   │       ├── conditions/     # Test conditions
+│       │   │   │       ├── model/          # Data models and DTOs
+│       │   │   │       ├── service/        # API service clients
+│       │   │   │       └── ProjectConfig.java  # Configuration
+│       │   │   └── resources/
+│       │   │       ├── config.properties   # Configuration properties
+│       │   │       └── logback.xml         # Logging configuration
 │       │   └── test/
 │       │       ├── java/
-│       │       │   └── com/
-│       │       │       └── bookstore/
-│       │       │           └── web/
-│       │       │               └── tests/
-│       │       │                   ├── auth/
-│       │       │                   ├── catalog/
-│       │       │                   ├── cart/
-│       │       │                   ├── order/
-│       │       │                   └── profile/
+│       │       │   └── com/petclinic/api/
+│       │       │       ├── containers/     # TestContainers setup
+│       │       │       └── tests/          # Test classes
 │       │       └── resources/
-│       │           ├── testng.xml
-│       │           └── log4j2.xml
-└── common-module/          # Спільний модуль
+│       │           └── testng.xml          # TestNG configuration
+└── docs/                      # Documentation
 ```
 
-## Вимоги
+## Prerequisites
 
-- Java 21 або вище
-- Node.js 20.x або вище (для UI тестів)
-- Docker та Docker Compose (для локального розгортання)
-- PostgreSQL 15 або вище
+- Java 17 or higher
+- Gradle 8.5 or higher
+- Docker (for TestContainers)
 
-## Налаштування середовища
+## Getting Started
 
-1. Клонуйте репозиторій:
-   ```bash
-   git clone https://github.com/your-username/web-api-template.git
-   cd web-api-template
-   ```
-
-2. Запустіть локальне середовище за допомогою Docker Compose:
-   ```bash
-   docker-compose up -d
-   ```
-
-3. Перевірте, що всі сервіси запущені:
-   ```bash
-   docker-compose ps
-   ```
-
-## Запуск тестів
-
-### API тести
-
-Для запуску API тестів:
+### Clone the Repository
 
 ```bash
-./gradlew :automation:api-tests:test
+git clone https://github.com/yourusername/api-testing-framework.git
+cd api-testing-framework
 ```
 
-Додаткові параметри:
+### Environment Setup
 
-- `-Dapi.base.url=http://your-api-url` - URL API
-- `-Dapi.username=your-username` - ім'я користувача
-- `-Dapi.password=your-password` - пароль
+1. Create a `.env` file in the project root (optional, for local secrets):
 
-### UI тести
+```
+API_KEY=your_secret_api_key
+API_BASE_URL=http://custom-api-url.com/api/v3
+```
 
-Для запуску UI тестів:
+2. Configure `config.properties` for environment-specific settings:
+
+```properties
+testcontainers.enabled=true
+testcontainers.reuse.enable=true
+api.base.url=http://localhost:8080/api/v3
+logging.enabled=true
+locale=eng
+```
+
+## Running Tests
+
+### Basic Test Execution
+
+Run all tests with default settings:
 
 ```bash
-./gradlew :automation:web-tests:test
+./gradlew clean test
 ```
 
-Додаткові параметри:
+### Running with Specific Parameters
 
-- `-Dweb.base.url=http://your-web-url` - URL веб-додатку
-- `-Dbrowser=chromium|firefox|webkit` - браузер для тестів
-- `-Dheadless=false` - запуск браузера у видимому режимі
+Disable logging for cleaner output:
 
-### Генерація звітів Allure
+```bash
+./gradlew clean test -Dlogging.enabled=false
+```
 
-Після виконання тестів, згенеруйте звіт Allure:
+Enable TestContainers for isolated testing:
+
+```bash
+./gradlew clean test -Dtestcontainers.enabled=true
+```
+
+Custom API base URL:
+
+```bash
+./gradlew clean test -Dapi.base.url=http://your-api-url.com/api/v3
+```
+
+Combined parameters:
+
+```bash
+./gradlew clean test -Dlogging.enabled=false -Dtestcontainers.enabled=true
+```
+
+### Generating Reports
+
+Generate and open Allure reports:
 
 ```bash
 ./gradlew allureReport
 ./gradlew allureServe
 ```
 
-## Структура тестів
+## Configuration Options
 
-### API тести
+| Parameter                     | Description                              | Default Value                |
+|-------------------------------|------------------------------------------|------------------------------|
+| `api.base.url`                | Base URL for the API                     | http://localhost:8080/api/v3 |
+| `logging.enabled`             | Enable/disable request/response logging  | true                         |
+| `testcontainers.enabled`      | Enable/disable TestContainers            | true                         |
+| `testcontainers.reuse.enable` | Enable container reuse between test runs | true                         |
+| `locale`                      | Locale for test data generation          | eng                          |
 
-- `BaseApiTest` - базовий клас для API тестів
-- Тестові класи організовані за функціональними модулями:
-    - `auth/` - тести автентифікації
-    - `catalog/` - тести каталогу книг
-    - `cart/` - тести кошика
-    - `order/` - тести замовлень
-    - `profile/` - тести профілю користувача
+## Using .env for Local Secrets
 
-### UI тести
+This project supports using `.env` files for managing sensitive information locally:
 
-- `BaseUITest` - базовий клас для UI тестів
-- Тестові класи організовані за функціональними модулями:
-    - `auth/` - тести інтерфейсу автентифікації
-    - `catalog/` - тести інтерфейсу каталогу
-    - `cart/` - тести інтерфейсу кошика
-    - `order/` - тести інтерфейсу замовлень
-    - `profile/` - тести інтерфейсу профілю
+1. Add the dotenv-java dependency to your project
+2. Create a `.env` file in your project root
+3. Add `.env` to your `.gitignore` file
+4. Create a `.env.example` file with the structure but without actual secrets
+5. Update `ProjectConfig` to load from both `.env` and `config.properties`
 
-## Логування
+For more details, see the [.env usage guide](docs/env-usage.md).
 
-- Логи зберігаються в директорії `logs/`
-- Для API тестів:
-    - `api-tests.log` - загальний лог
-    - `api-tests-error.log` - лог помилок
-- Для UI тестів:
-    - `web-tests.log` - загальний лог
-    - `web-tests-error.log` - лог помилок
-    - `playwright.log` - лог Playwright
+## Roadmap
 
-## Безпека
+### Short-term Goals
 
-- Всі конфігураційні дані зберігаються в змінних середовища
-- Чутливі дані (паролі, токени) не зберігаються в репозиторії
-- Використовується JWT для автентифікації
-- Всі API endpoints захищені
-- Реалізована валідація вхідних даних
+- [ ] Add more comprehensive test coverage for all Petstore API endpoints
+- [ ] Implement data-driven testing with CSV/Excel data sources
+- [ ] Add contract testing capabilities
+- [ ] Enhance error handling and reporting
 
-## CI/CD
+### Medium-term Goals
 
-Проект готовий до інтеграції з CI/CD системами. Приклади конфігурацій:
+- [ ] Add UI testing module using Selenide
+- [ ] Implement parallel test execution with improved reporting
+- [ ] Add performance testing capabilities
+- [ ] Integrate with CI/CD pipelines (GitHub Actions, Jenkins)
 
-- GitHub Actions
-- Jenkins
-- GitLab CI
+### Long-term Goals
 
-## Додаткова документація
+- [ ] Add Playwright for cross-browser UI testing
+- [ ] Implement visual testing capabilities
+- [ ] Add mobile testing integration
+- [ ] Develop comprehensive reporting dashboard
 
-- [API документація](docs/api.md)
-- [Тестова документація](docs/testing.md)
-- [Архітектура](docs/architecture.md)
-- [Безпека](docs/security.md)
+## Contributing
 
-## Ліцензія
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-Цей проект розповсюджується під ліцензією MIT. Див. файл [LICENSE](LICENSE) для деталей. 
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

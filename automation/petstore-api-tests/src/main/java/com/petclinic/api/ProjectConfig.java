@@ -10,11 +10,21 @@ public interface ProjectConfig extends Config {
         return ConfigFactory.create(ProjectConfig.class, System.getProperties());
     }
 
-    @Key("api.base.url")
-    @DefaultValue("http://localhost:8080/api/v3")
+    String env();
+
+    @Key("{env}.api.base.url")
     String apiBaseUrl();
 
     @Key("logging.enabled")
     @DefaultValue("true")
     boolean loggingEnabled();
+
+    @Key("locale")
+    String locale();
+
+    @Key("testcontainers.enabled")
+    boolean testContainersEnabled();
+
+    @Key("testcontainers.reuse.enable")
+    boolean reuseContainersEnabled();
 }
