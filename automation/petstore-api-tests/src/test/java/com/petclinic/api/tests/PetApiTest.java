@@ -5,6 +5,7 @@ import com.petclinic.api.model.enums.PetStatus;
 import com.petclinic.api.model.payloads.PetPayload;
 import com.petclinic.api.model.responses.PetCreationResponse;
 import com.petclinic.api.service.PetApiService;
+import lombok.extern.slf4j.Slf4j;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -19,6 +20,7 @@ import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.text.IsEmptyString.emptyOrNullString;
 
+@Slf4j
 public class PetApiTest extends BaseTest {
 
     private PetApiService petApiService;
@@ -62,7 +64,7 @@ public class PetApiTest extends BaseTest {
     public void testCreateAndGetPet() {
         PetCreationResponse createdPet = createPet();
 
-        // Отримання улюбленця за ID
+        log.info("Getting pet by ID: {}", createdPet.getId());
         AssertableResponse getResponse = petApiService.getPetById(createdPet.getId());
         getResponse
                 .shouldHave(statusCode(200))
@@ -75,17 +77,17 @@ public class PetApiTest extends BaseTest {
 
     @Test
     public void testUpdatePetStatus() {
-        // Створення улюбленця
+        log.info("Creating a new pet");
         PetCreationResponse createdPet = createPet();
 
-        // Оновлення статусу
         String newStatus = "sold";
+        log.info("Updating pet status to: {}", newStatus);
         AssertableResponse updateResponse = petApiService.updatePetStatus(createdPet, newStatus);
         updateResponse
                 .shouldHave(statusCode(200))
                 .shouldHave(contentType("application/json"));
 
-        // Перевірка оновленого статусу
+        log.info("Verifying updated pet status");
         AssertableResponse getResponse = petApiService.getPetById(createdPet.getId());
         getResponse
                 .shouldHave(statusCode(200))
@@ -94,31 +96,31 @@ public class PetApiTest extends BaseTest {
 
     @Test
     public void testFindPetsByStatus() {
-        // Пошук улюбленців за статусом
+        log.info("Finding pets by status: {}", PetStatus.AVAILABLE.getValue());
         AssertableResponse response = petApiService.findPetsByStatus(PetStatus.AVAILABLE.getValue());
         response
                 .shouldHave(statusCode(200))
                 .shouldHave(contentType("application/json"))
                 .shouldHave(bodyField("$.size()", greaterThan(0)));
 
-        // Перевірка, що всі улюбленці мають правильний статус
+        log.info("Verifying all pets have the correct status");
         assertThat(response.getResponse().jsonPath().getList("status"))
-                .as("Перевірка статусу всіх улюбленців")
+                .as("Verifying status of all pets")
                 .allMatch(status -> status.equals(PetStatus.AVAILABLE.getValue()));
     }
 
     @Test
     public void testDeletePet() {
-        // Створення улюбленця
+        log.info("Creating a new pet");
         Integer petId = createPet().getId();
 
-        // Видалення улюбленця
+        log.info("Deleting pet with ID: {}", petId);
         AssertableResponse deleteResponse = petApiService.deletePet(petId);
         deleteResponse.
                 shouldHave(statusCode(200))
                 .shouldHave(contentType("application/json"));
 
-        // Перевірка, що улюбленця більше немає
+        log.info("Verifying pet no longer exists");
         AssertableResponse getResponse = petApiService.getPetById(petId);
         getResponse.
                 shouldHave(statusCode(404));

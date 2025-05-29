@@ -63,6 +63,8 @@ subprojects {
         // Base dependencies
         compileOnly "org.projectlombok:lombok:${lombokVersion}"
         annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+        testCompileOnly "org.projectlombok:lombok:${lombokVersion}"
+        testAnnotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 
         // Logging
         implementation "org.slf4j:slf4j-api:${slf4jVersion}"
@@ -79,18 +81,19 @@ subprojects {
 
     test {
         useTestNG() {
-//            options.suites 'src/test/resources/testng.xml'
-            options.parallel = 'class'
+            options.parallel = 'method'
             options.threadCount = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
         }
+
+        systemProperties System.getProperties()
 
         testLogging {
             events "passed", "skipped", "failed"
             showStandardStreams = true
-            showExceptions = true
-            showCauses = true
-            showStackTraces = false
+            exceptionFormat = 'full'
         }
+
+        test.outputs.upToDateWhen { false }
 
         systemProperty 'allure.results.directory', "${buildDir}/allure-results"
     }
@@ -108,9 +111,15 @@ project(':automation:common') {
     }
 }
 
-project(':automation:petclinic-api-tests') {
+project(':automation:petstore-api-tests') {
     dependencies {
         implementation project(':automation:common')
+
+        // Configuration
+        implementation "org.aeonbits.owner:owner:${ownerVersion}"
+
+        // Testcontainers
+        testImplementation "org.testcontainers:testcontainers:1.19.7"
     }
 
     // Add task for running API tests only

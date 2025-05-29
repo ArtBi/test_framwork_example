@@ -3,7 +3,9 @@ package com.petclinic.api.assertions;
 import com.petclinic.api.conditions.Condition;
 import io.restassured.http.Headers;
 import io.restassured.response.Response;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class AssertableResponse {
 
     private final Response response;
@@ -17,6 +19,7 @@ public class AssertableResponse {
     }
 
     public AssertableResponse shouldHave(Condition condition) {
+        log.info("Checking the condition that {}", condition);
         condition.check(response);
         return this;
     }

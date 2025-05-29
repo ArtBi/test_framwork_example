@@ -1,5 +1,6 @@
 package com.petclinic.api.service;
 
+import com.petclinic.api.ProjectConfig;
 import com.petclinic.api.assertions.AssertableResponse;
 import io.restassured.RestAssured;
 import io.restassured.filter.Filter;
@@ -15,11 +16,10 @@ import java.util.Map;
 
 @Slf4j
 public abstract class BaseApiService {
-    //    private static final String BASE_URL = "http://petclinic.swagger.io/v2";
-    private static final String BASE_URL = "http://localhost:8080/api/v3";
-
     protected static String getBaseUrl() {
-        return BASE_URL;
+        String baseUrl = System.getProperty("api.base.url", ProjectConfig.get().apiBaseUrl());
+        log.info("Using API base URL: {}", baseUrl);
+        return baseUrl;
     }
 
     protected RequestSpecification setup() {
@@ -30,7 +30,7 @@ public abstract class BaseApiService {
     }
 
     private List<Filter> getFilters() {
-        boolean enableLogging = Boolean.parseBoolean(System.getProperty("logging", "true"));
+        boolean enableLogging = ProjectConfig.get().loggingEnabled();
         if (enableLogging) {
             log.info("Enabling logging");
             return List.of(new RequestLoggingFilter(), new ResponseLoggingFilter());
@@ -40,52 +40,64 @@ public abstract class BaseApiService {
     }
 
     protected AssertableResponse get(String endpoint) {
+        log.debug("Executing GET request to endpoint: {}", endpoint);
         Response response = setup()
                 .when()
                 .get(endpoint);
+        log.debug("Received response with status code: {}", response.getStatusCode());
         return new AssertableResponse(response);
     }
 
     protected AssertableResponse get(String endpoint, Map<String, String> pathParams, Map<String, String> queryParams) {
+        log.debug("Executing GET request to endpoint: {} with pathParams: {} and queryParams: {}", endpoint, pathParams, queryParams);
         Response response = setup()
                 .pathParams(pathParams)
                 .queryParams(queryParams)
                 .when()
                 .get(endpoint);
+        log.debug("Received response with status code: {}", response.getStatusCode());
         return new AssertableResponse(response);
     }
 
 
     protected AssertableResponse post(String endpoint, Object body) {
+        log.debug("Executing POST request to endpoint: {} with body: {}", endpoint, body);
         Response response = setup()
                 .body(body)
                 .when()
                 .post(endpoint);
+        log.debug("Received response with status code: {}", response.getStatusCode());
         return new AssertableResponse(response);
     }
 
     protected AssertableResponse post(String endpoint, Map<String, String> pathParams, Map<String, String> queryParams) {
+        log.debug("Executing POST request to endpoint: {} with pathParams: {} and queryParams: {}", endpoint, pathParams, queryParams);
         Response response = setup()
                 .pathParams(pathParams)
                 .queryParams(queryParams)
                 .when()
                 .post(endpoint);
+        log.debug("Received response with status code: {}", response.getStatusCode());
         return new AssertableResponse(response);
     }
 
     protected AssertableResponse put(String endpoint, Object body) {
+        log.debug("Executing PUT request to endpoint: {} with body: {}", endpoint, body);
         Response response = setup()
                 .body(body)
                 .when()
                 .put(endpoint);
+        log.debug("Received response with status code: {}", response.getStatusCode());
         return new AssertableResponse(response);
     }
 
     protected AssertableResponse delete(String endpoint, Map<String, String> pathParams) {
+        log.debug("Executing DELETE request to endpoint: {} with pathParams: {}", endpoint, pathParams);
         Response response = setup()
                 .pathParams(pathParams)
                 .when()
                 .delete(endpoint);
+        log.debug("Received response with status code: {}", response.getStatusCode());
         return new AssertableResponse(response);
     }
 }

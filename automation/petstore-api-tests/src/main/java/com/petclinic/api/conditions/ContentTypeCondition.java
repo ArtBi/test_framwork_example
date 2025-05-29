@@ -12,4 +12,9 @@ public class ContentTypeCondition implements Condition {
     public void check(Response response) {
         response.then().assertThat().contentType(contentType);
     }
+
+    @Override
+    public String toString() {
+        return "content type is [%s]".formatted(contentType);
+    }
 }
