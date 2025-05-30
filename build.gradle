@@ -24,13 +24,23 @@ ext {
     logbackVersion = '1.4.14'
     assertjVersion = '3.25.3'
     testngVersion = '7.9.0'
-    allureVersion = '2.25.0'
+    allureVersion = '2.29.1'
     jacksonVersion = '2.18.2'
     hamcrestVersion = '2.2'
     jsonVersion = '20231013'
     jsonPathVersion = '2.8.0'
     ownerVersion = '1.0.12'
     javaFakerVersion = '1.0.2'
+    testcontainersVersion = '1.19.7'
+}
+
+allure {
+    version = allureVersion
+    autoconfigure = true
+    aspectjweaver = true
+    useTestNG {
+        version = allureVersion
+    }
 }
 
 
@@ -38,6 +48,16 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'io.qameta.allure'
     apply plugin: 'com.diffplug.spotless'
+
+    allure {
+        // Configure allure for each subproject
+        version = allureVersion
+        autoconfigure = true
+        aspectjweaver = true
+        useTestNG {
+            version = allureVersion
+        }
+    }
 
     java {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -74,8 +94,13 @@ subprojects {
 
         // Test dependencies
         testImplementation "org.testng:testng:${testngVersion}"
-        testImplementation "io.qameta.allure:allure-testng:${allureVersion}"
 
+        // Test reports
+        implementation "io.qameta.allure:allure-bom:${allureVersion}"
+        implementation "io.qameta.allure:allure-testng:${allureVersion}"
+        implementation "io.qameta.allure:allure-rest-assured:${allureVersion}"
+
+        // Data generation
         implementation "com.github.javafaker:javafaker:${javaFakerVersion}"
     }
 
@@ -95,11 +120,12 @@ subprojects {
 
         test.outputs.upToDateWhen { false }
 
-        systemProperty 'allure.results.directory', "${buildDir}/allure-results"
+        // Set allure results directory as a JVM argument instead of a system property
+        jvmArgs "-Dallure.results.directory=${layout.buildDirectory.get()}/allure-results"
     }
 }
 
-project(':automation:common') {
+project(':common') {
     dependencies {
         // JSON
         implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
@@ -111,15 +137,15 @@ project(':automation:common') {
     }
 }
 
-project(':automation:petstore-api-tests') {
+project(':petstore-api-tests') {
     dependencies {
-        implementation project(':automation:common')
+        implementation project(':common')
+
+        // Testcontainers
+        testImplementation "org.testcontainers:testcontainers:${testcontainersVersion}"
 
         // Configuration
         implementation "org.aeonbits.owner:owner:${ownerVersion}"
-
-        // Testcontainers
-        testImplementation "org.testcontainers:testcontainers:1.19.7"
     }
 
     // Add task for running API tests only

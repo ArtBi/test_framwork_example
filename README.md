@@ -8,7 +8,7 @@ approach to API testing with a focus on the Swagger Petstore API as an example.
 - **Modular Architecture**: Clean separation of concerns with service, model, and test layers
 - **Fluent Assertions**: Custom assertion mechanism for readable test validations
 - **Docker Integration**: TestContainers support for isolated testing environments
-- **Configurable**: Environment-specific configuration with property files and .env support
+- **Configurable**: Environment-specific configuration with property files
 - **Reporting**: Allure reports for comprehensive test results visualization
 - **Logging**: Detailed logging with Logback
 - **Data Generation**: Realistic test data generation with JavaFaker
@@ -64,8 +64,8 @@ approach to API testing with a focus on the Swagger Petstore API as an example.
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/api-testing-framework.git
-cd api-testing-framework
+git clone https://github.com/artbi/web_api_template.git
+cd web_api_template
 ```
 
 ### Environment Setup
@@ -125,11 +125,63 @@ Combined parameters:
 
 ### Generating Reports
 
-Generate and open Allure reports:
+This project uses Allure for comprehensive test reporting. Allure provides rich visual reports with detailed test
+execution information, including:
+
+- Test execution timeline
+- Test suite and case breakdown
+- Detailed failure information with screenshots and logs
+- Environment and configuration details
+- Custom attachments and steps
+
+#### Generate HTML Report
+
+To generate an Allure HTML report after running tests:
 
 ```bash
 ./gradlew allureReport
+```
+
+This creates a report in `build/allure-report`. Open `index.html` in this directory to view the report in your browser.
+
+#### Serve Report Locally
+
+To generate and automatically open the report in your default browser:
+
+```bash
 ./gradlew allureServe
+```
+
+This starts a local web server and opens the report in your browser.
+
+#### Clean Reports
+
+To clean previous Allure results before a new test run:
+
+```bash
+./gradlew cleanAllureResults
+```
+
+#### Enhancing Reports
+
+The framework uses Allure annotations to enhance reports:
+
+- `@Feature` - Group tests by feature
+- `@Story` - Define user stories within features
+- `@Description` - Add detailed test descriptions
+- `@Step` - Break down test steps for better visibility
+- `@Severity` - Mark test importance (BLOCKER, CRITICAL, NORMAL, MINOR, TRIVIAL)
+
+Example:
+
+```java
+@Test
+@Story("Create and Retrieve Pet")
+@Description("Test creating a new pet and then retrieving it by ID")
+@Severity(SeverityLevel.CRITICAL)
+public void testCreateAndGetPet() {
+    // Test code
+}
 ```
 
 ## Configuration Options

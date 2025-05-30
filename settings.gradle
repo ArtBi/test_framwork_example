@@ -1,5 +1,5 @@
 rootProject.name = 'petclinic-api-automation'
 
-include 'automation:common'
-include 'automation:petstore-api-tests'
+include 'common'
+include 'petstore-api-tests'
 
