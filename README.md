@@ -206,6 +206,24 @@ This project supports using `.env` files for managing sensitive information loca
 
 For more details, see the [.env usage guide](docs/env-usage.md).
 
+## CI/CD with GitHub Actions
+
+This project includes GitHub Actions workflows for continuous integration and testing:
+
+- Automated test execution on push and pull requests
+- Parallel test execution for faster feedback
+- Allure report generation and publishing
+- Test results visualization in GitHub
+
+To use GitHub Actions:
+
+1. Push your changes to GitHub
+2. GitHub Actions will automatically run the tests
+3. View test results in the Actions tab
+4. Download Allure reports from the workflow artifacts
+
+For more details, see the [GitHub Actions guide](docs/github-actions.md).
+
 ## Roadmap
 
 ### Short-term Goals
@@ -220,7 +238,8 @@ For more details, see the [.env usage guide](docs/env-usage.md).
 - [ ] Add UI testing module using Selenide
 - [ ] Implement parallel test execution with improved reporting
 - [ ] Add performance testing capabilities
-- [ ] Integrate with CI/CD pipelines (GitHub Actions, Jenkins)
+- [x] Integrate with CI/CD pipelines (GitHub Actions)
+- [ ] Integrate with additional CI/CD pipelines (Jenkins)
 
 ### Long-term Goals
 
