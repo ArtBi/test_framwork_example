@@ -14,6 +14,6 @@ public interface BaseConfig extends Config {
     String apiBaseUrl();
 
     @Key("logging.enabled")
-    @DefaultValue("true")
+    @DefaultValue("false")
     boolean loggingEnabled();
 }

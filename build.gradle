@@ -49,16 +49,6 @@ subprojects {
     apply plugin: 'io.qameta.allure'
     apply plugin: 'com.diffplug.spotless'
 
-    allure {
-        // Configure allure for each subproject
-        version = allureVersion
-        autoconfigure = true
-        aspectjweaver = true
-        useTestNG {
-            version = allureVersion
-        }
-    }
-
     java {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17

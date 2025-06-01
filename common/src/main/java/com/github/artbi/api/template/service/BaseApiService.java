@@ -37,7 +37,7 @@ public abstract class BaseApiService {
             return List.of(
                     new AllureRestAssured(), new RequestLoggingFilter(), new ResponseLoggingFilter());
         } else {
-            return List.of(new ResponseLoggingFilter());
+            return List.of(new AllureRestAssured());
         }
     }
 
