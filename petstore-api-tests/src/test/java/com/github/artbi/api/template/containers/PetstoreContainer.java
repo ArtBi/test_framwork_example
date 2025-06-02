@@ -66,6 +66,6 @@ public class PetstoreContainer extends GenericContainer<PetstoreContainer> {
     public String getBaseUrl() {
         String baseUrl = String.format("http://%s:%d/api/v3", getHost(), getMappedPort(PETSTORE_PORT));
         log.info("Generated Petstore API base URL: {}", baseUrl);
-        return baseUrl;
+    return baseUrl;
   }
 }

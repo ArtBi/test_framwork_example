@@ -5,18 +5,18 @@ import lombok.ToString;
 
 @ToString
 public enum PetStatus {
-    AVAILABLE("available"),
-    PENDING("pending"),
-    SOLD("sold");
+  AVAILABLE("available"),
+  PENDING("pending"),
+  SOLD("sold");
 
-    private final String value;
+  private final String value;
 
-    PetStatus(String value) {
-        this.value = value;
-    }
+  PetStatus(String value) {
+    this.value = value;
+  }
 
-    @JsonValue
-    public String getValue() {
-        return value;
-    }
+  @JsonValue
+  public String getValue() {
+    return value;
+  }
 }
