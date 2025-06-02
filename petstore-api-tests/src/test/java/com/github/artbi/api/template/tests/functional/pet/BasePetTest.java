@@ -21,38 +21,38 @@ import static org.hamcrest.text.IsEmptyString.emptyOrNullString;
 @Slf4j
 public class BasePetTest extends BaseTest {
 
-    protected PetApiService petApiService;
-    protected PetPayload petPayload;
+  protected PetApiService petApiService;
+  protected PetPayload petPayload;
 
-    @BeforeClass
-    public void setUp() {
-        petApiService = new PetApiService();
-        initializePetPayload();
-    }
+  @BeforeClass
+  public void setUp() {
+    petApiService = new PetApiService();
+    initializePetPayload();
+  }
 
-    @Step("Initialize pet payload with random data")
-    protected void initializePetPayload() {
-        petPayload =
-                PetPayload.builder()
-                        .id(getFaker().random().nextInt(1, 100000))
-                        .name(getFaker().funnyName().name())
-                        .category(PetPayload.Category.builder().id(1).name("Dogs").build())
-                        .photoUrls(Collections.singletonList("https://example.com/photo.jpg"))
-                        .tags(
-                                Collections.singletonList(PetPayload.Tag.builder().id(1).name("friendly").build()))
-                        .status(PetStatus.AVAILABLE)
-                        .build();
-    }
+  @Step("Initialize pet payload with random data")
+  protected void initializePetPayload() {
+    petPayload =
+            PetPayload.builder()
+                    .id(getFaker().random().nextInt(1, 100000))
+                    .name(getFaker().funnyName().name())
+                    .category(PetPayload.Category.builder().id(1).name("Dogs").build())
+                    .photoUrls(Collections.singletonList("https://example.com/photo.jpg"))
+                    .tags(
+                            Collections.singletonList(PetPayload.Tag.builder().id(1).name("friendly").build()))
+                    .status(PetStatus.AVAILABLE)
+                    .build();
+  }
 
-    @Step("Create a new pet")
-    protected PetCreationResponse createPet() {
-        return petApiService
-                .createPet(petPayload)
-                .shouldHave(statusCode(200))
-                .shouldHave(contentType("application/json"))
-                .shouldHave(bodyField("id", not(emptyOrNullString())))
-                .shouldHave(bodyField("name", equalTo(petPayload.getName())))
-                .shouldHave(bodyField("status", equalTo(petPayload.getStatus().getValue())))
-                .as(PetCreationResponse.class);
-    }
+  @Step("Create a new pet")
+  protected PetCreationResponse createPet() {
+    return petApiService
+            .createPet(petPayload)
+            .shouldHave(statusCode(200))
+            .shouldHave(contentType("application/json"))
+            .shouldHave(bodyField("id", not(emptyOrNullString())))
+            .shouldHave(bodyField("name", equalTo(petPayload.getName())))
+            .shouldHave(bodyField("status", equalTo(petPayload.getStatus().getValue())))
+            .as(PetCreationResponse.class);
+  }
 }

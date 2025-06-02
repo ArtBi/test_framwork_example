@@ -14,35 +14,35 @@ import java.util.List;
 @AllArgsConstructor
 public class PetPayload {
 
+  private Integer id;
+
+  private String name;
+
+  private Category category;
+
+  private List<String> photoUrls;
+
+  private List<Tag> tags;
+
+  private PetStatus status;
+
+  @Data
+  @Builder
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class Category {
     private Integer id;
 
     private String name;
+  }
 
-    private Category category;
+  @Data
+  @Builder
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class Tag {
+    private Integer id;
 
-    private List<String> photoUrls;
-
-    private List<Tag> tags;
-
-    private PetStatus status;
-
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class Category {
-        private Integer id;
-
-        private String name;
-    }
-
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class Tag {
-        private Integer id;
-
-        private String name;
-    }
+    private String name;
+  }
 }

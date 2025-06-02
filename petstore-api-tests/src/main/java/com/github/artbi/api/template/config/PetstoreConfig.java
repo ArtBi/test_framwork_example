@@ -6,13 +6,13 @@ import org.aeonbits.owner.ConfigFactory;
 @Config.Sources({"classpath:config.properties"})
 public interface PetstoreConfig extends BaseConfig {
 
-    static PetstoreConfig get() {
-        return ConfigFactory.create(PetstoreConfig.class, System.getProperties());
-    }
+  static PetstoreConfig get() {
+    return ConfigFactory.create(PetstoreConfig.class, System.getProperties());
+  }
 
-    @Key("testcontainers.enabled")
-    boolean testContainersEnabled();
+  @Key("testcontainers.enabled")
+  boolean testContainersEnabled();
 
-    @Key("testcontainers.reuse.enable")
-    boolean reuseContainersEnabled();
+  @Key("testcontainers.reuse.enable")
+  boolean reuseContainersEnabled();
 }

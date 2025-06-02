@@ -19,21 +19,21 @@ import static org.hamcrest.Matchers.equalTo;
 @Feature("Pet Management")
 public class UpdatePetTest extends BasePetTest {
 
-    @Test(groups = "regression")
-    @Story("Update Pet Status")
-    @Description("Test updating a pet's status and verifying the change")
-    @Severity(SeverityLevel.NORMAL)
-    public void testUpdatePetStatus() {
-        log.info("Creating a new pet");
-        PetCreationResponse createdPet = createPet();
+  @Test(groups = "regression")
+  @Story("Update Pet Status")
+  @Description("Test updating a pet's status and verifying the change")
+  @Severity(SeverityLevel.NORMAL)
+  public void testUpdatePetStatus() {
+    log.info("Creating a new pet");
+    PetCreationResponse createdPet = createPet();
 
-        String newStatus = "sold";
-        log.info("Updating pet status to: {}", newStatus);
-        AssertableResponse updateResponse = petApiService.updatePetStatus(createdPet, newStatus);
-        updateResponse.shouldHave(statusCode(200)).shouldHave(contentType("application/json"));
+    String newStatus = "sold";
+    log.info("Updating pet status to: {}", newStatus);
+    AssertableResponse updateResponse = petApiService.updatePetStatus(createdPet, newStatus);
+    updateResponse.shouldHave(statusCode(200)).shouldHave(contentType("application/json"));
 
-        log.info("Verifying updated pet status");
-        AssertableResponse getResponse = petApiService.getPetById(createdPet.getId());
-        getResponse.shouldHave(statusCode(200)).shouldHave(bodyField("status", equalTo(newStatus)));
-    }
+    log.info("Verifying updated pet status");
+    AssertableResponse getResponse = petApiService.getPetById(createdPet.getId());
+    getResponse.shouldHave(statusCode(200)).shouldHave(bodyField("status", equalTo(newStatus)));
+  }
 }

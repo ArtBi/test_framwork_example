@@ -16,20 +16,20 @@ import static com.github.artbi.api.template.conditions.Conditions.statusCode;
 @Feature("Pet Management")
 public class DeletePetTest extends BasePetTest {
 
-    @Test(groups = "regression")
-    @Story("Delete Pet")
-    @Description("Test deleting a pet and verifying it no longer exists")
-    @Severity(SeverityLevel.CRITICAL)
-    public void testDeletePet() {
-        log.info("Creating a new pet");
-        Integer petId = createPet().getId();
+  @Test(groups = "regression")
+  @Story("Delete Pet")
+  @Description("Test deleting a pet and verifying it no longer exists")
+  @Severity(SeverityLevel.CRITICAL)
+  public void testDeletePet() {
+    log.info("Creating a new pet");
+    Integer petId = createPet().getId();
 
-        log.info("Deleting pet with ID: {}", petId);
-        AssertableResponse deleteResponse = petApiService.deletePet(petId);
-        deleteResponse.shouldHave(statusCode(200)).shouldHave(contentType("application/json"));
+    log.info("Deleting pet with ID: {}", petId);
+    AssertableResponse deleteResponse = petApiService.deletePet(petId);
+    deleteResponse.shouldHave(statusCode(200)).shouldHave(contentType("application/json"));
 
-        log.info("Verifying pet no longer exists");
-        AssertableResponse getResponse = petApiService.getPetById(petId);
-        getResponse.shouldHave(statusCode(404));
-    }
+    log.info("Verifying pet no longer exists");
+    AssertableResponse getResponse = petApiService.getPetById(petId);
+    getResponse.shouldHave(statusCode(404));
+  }
 }
