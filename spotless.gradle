@@ -1,0 +1,66 @@
+// Spotless configuration for code formatting
+spotless {
+    // Format all Java files
+    java {
+        // Use Google's Java style guide
+        googleJavaFormat()
+
+        // Remove unused imports
+        removeUnusedImports()
+
+        // Trim trailing whitespace
+        trimTrailingWhitespace()
+
+        // Ensure files end with a newline
+        endWithNewline()
+
+        // Import order
+        importOrder('java', 'javax', 'org', 'com', 'io', '')
+
+        // Custom rules
+        custom 'no wildcard imports', { it.replaceAll('import\\s+[^;]*\\*;', '') }
+
+        // License header
+        licenseHeader '/*\n * Copyright (c) $YEAR\n */'
+
+        // Target Java files
+        target '**/*.java'
+
+        // Exclude generated files
+        targetExclude '**/build/**', '**/generated/**', '**/target/**'
+    }
+
+    // Format Gradle files
+    groovyGradle {
+        target '**/*.gradle'
+        greclipse()
+        indentWithSpaces(4)
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+
+    // Format XML files
+    format 'xml', {
+        target '**/*.xml'
+        indentWithSpaces(4)
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+
+    // Format Markdown files
+    format 'markdown', {
+        target '**/*.md'
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+}
+
+// Add Spotless check to the build process
+tasks.named('check').configure {
+    dependsOn 'spotlessCheck'
+}
+
+// Add Spotless apply to the build process
+tasks.named('build').configure {
+    dependsOn 'spotlessApply'
+}

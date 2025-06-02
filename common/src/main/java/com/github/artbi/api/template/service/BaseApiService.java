@@ -1,3 +1,6 @@
+/*
+ * Copyright (c) 2025
+ */
 package com.github.artbi.api.template.service;
 
 import com.github.artbi.api.template.assertions.AssertableResponse;

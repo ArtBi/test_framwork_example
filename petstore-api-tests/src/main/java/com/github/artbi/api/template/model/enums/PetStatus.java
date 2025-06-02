@@ -1,3 +1,6 @@
+/*
+ * Copyright (c) 2025
+ */
 package com.github.artbi.api.template.model.enums;
 
 import com.fasterxml.jackson.annotation.JsonValue;

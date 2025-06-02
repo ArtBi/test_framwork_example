@@ -2,4 +2,3 @@ rootProject.name = 'petclinic-api-automation'
 
 include 'common'
 include 'petstore-api-tests'
-

@@ -4,6 +4,8 @@ plugins {
     id 'com.diffplug.spotless' version '6.25.0'
 }
 
+// Apply Spotless configuration from external file
+apply from: 'spotless.gradle'
 
 allprojects {
     group = 'io.artbi.aqa.templates'
@@ -54,14 +56,8 @@ subprojects {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    spotless {
-        java {
-            googleJavaFormat()
-            removeUnusedImports()
-            trimTrailingWhitespace()
-            endWithNewline()
-        }
-    }
+    // Apply Spotless configuration from external file
+    apply from: rootProject.file('spotless.gradle')
 
     dependencies {
         // API Testing

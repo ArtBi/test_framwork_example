@@ -1,3 +1,6 @@
+/*
+ * Copyright (c) 2025
+ */
 package com.github.artbi.api.template.assertions;
 
 import com.github.artbi.api.template.conditions.Condition;

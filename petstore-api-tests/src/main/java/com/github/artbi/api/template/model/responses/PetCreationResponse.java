@@ -1,3 +1,6 @@
+/*
+ * Copyright (c) 2025
+ */
 package com.github.artbi.api.template.model.responses;
 
 import com.fasterxml.jackson.annotation.JsonInclude;

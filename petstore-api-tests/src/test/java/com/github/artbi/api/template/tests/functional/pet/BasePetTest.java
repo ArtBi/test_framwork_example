@@ -1,3 +1,6 @@
+/*
+ * Copyright (c) 2025
+ */
 package com.github.artbi.api.template.tests.functional.pet;
 
 import com.github.artbi.api.template.model.enums.PetStatus;
