@@ -68,23 +68,24 @@ git clone https://github.com/artbi/web_api_template.git
 cd web_api_template
 ```
 
+### Available Documentation
+
+This directory contains documentation for various aspects of the project:
+
+- [API Testing](docs/api.md) - Documentation for API testing framework
+- [Environment Variables Usage](docs/env-usage.md) - Guide for using .env files for local secrets
+- [GitHub Actions](docs/github-actions.md) - Information about CI/CD with GitHub Actions
+- [Spotless Code Formatting](docs/spotless.md) - Guide for using Spotless for code formatting
+
 ### Environment Setup
 
-1. Create a `.env` file in the project root (optional, for local secrets):
-
-```
-API_KEY=your_secret_api_key
-API_BASE_URL=http://custom-api-url.com/api/v3
-```
-
-2. Configure `config.properties` for environment-specific settings:
+1. Configure `config.properties` for environment-specific settings:
 
 ```properties
 testcontainers.enabled=true
 testcontainers.reuse.enable=true
 api.base.url=http://localhost:8080/api/v3
 logging.enabled=true
-locale=eng
 ```
 
 ## Running Tests
@@ -192,7 +193,7 @@ public void testCreateAndGetPet() {
 | `logging.enabled`             | Enable/disable request/response logging  | true                         |
 | `testcontainers.enabled`      | Enable/disable TestContainers            | true                         |
 | `testcontainers.reuse.enable` | Enable container reuse between test runs | true                         |
-| `locale`                      | Locale for test data generation          | eng                          |
+
 
 ## Using .env for Local Secrets
 
@@ -224,12 +225,33 @@ To use GitHub Actions:
 
 For more details, see the [GitHub Actions guide](docs/github-actions.md).
 
+## Code Formatting with Spotless
+
+This project uses Spotless for code formatting and style enforcement:
+
+- Google Java Format for Java files
+- Consistent formatting for Gradle, XML, and Markdown files
+- Automatic format checking during builds
+- IDE integration support
+
+To use Spotless:
+
+```bash
+# Check formatting without making changes
+./gradlew spotlessCheck
+
+# Apply formatting to all files
+./gradlew spotlessApply
+```
+
+For more details, see the [Spotless guide](docs/spotless.md).
+
 ## Roadmap
 
 ### Short-term Goals
 
 - [ ] Add more comprehensive test coverage for all Petstore API endpoints
-- [ ] Implement data-driven testing with CSV/Excel data sources
+- [ ] Implement data-driven testing data sources
 - [ ] Add contract testing capabilities
 - [ ] Enhance error handling and reporting
 

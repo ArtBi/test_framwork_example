@@ -26,7 +26,7 @@ ext {
     logbackVersion = '1.4.14'
     assertjVersion = '3.25.3'
     testngVersion = '7.9.0'
-    allureVersion = '2.29.1'
+    allureVersion = '2.24.0'
     jacksonVersion = '2.18.2'
     hamcrestVersion = '2.2'
     jsonVersion = '20231013'
@@ -141,7 +141,7 @@ project(':petstore-api-tests') {
 
         useTestNG() {
             // API test settings
-            options.suites 'petstore-api-tests/src/test/resources/testng.xml'
+            options.suites 'src/test/resources/testng.xml'
         }
     }
 }

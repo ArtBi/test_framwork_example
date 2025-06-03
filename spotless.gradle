@@ -3,7 +3,7 @@ spotless {
     // Format all Java files
     java {
         // Use Google's Java style guide
-        googleJavaFormat()
+        eclipse().configFile("${rootDir}/config/spotless/eclipse-java-formatter.xml")
 
         // Remove unused imports
         removeUnusedImports()

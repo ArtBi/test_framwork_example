@@ -7,7 +7,7 @@
             </run>
         </groups>
         <packages>
-            <package name="com.github.artbi.api.template.tests"/>
+            <package name="com.github.artbi.api.petstore.*"/>
         </packages>
     </test>
     <test name="Regression API Tests" verbose="1" parallel="methods" thread-count="4">
@@ -17,7 +17,7 @@
             </run>
         </groups>
         <packages>
-            <package name="com.github.artbi.api.template.tests"/>
+            <package name="com.github.artbi.api.petstore.*"/>
         </packages>
     </test>
 </suite>
