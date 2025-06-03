@@ -141,7 +141,7 @@ project(':petstore-api-tests') {
 
         useTestNG() {
             // API test settings
-            options.suites 'petstore-api-tests/src/test/resources/testng.xml'
+            options.suites 'src/test/resources/testng.xml'
         }
     }
 }
