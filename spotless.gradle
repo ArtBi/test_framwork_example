@@ -20,9 +20,6 @@ spotless {
         // Custom rules
         custom 'no wildcard imports', { it.replaceAll('import\\s+[^;]*\\*;', '') }
 
-        // License header
-        licenseHeader '/*\n * Copyright (c) $YEAR\n */'
-
         // Target Java files
         target '**/*.java'
 

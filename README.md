@@ -1,4 +1,4 @@
-# Comprehensive AQA Framework
+# Comprehensive AQA Framework - test_framwork_example (v1.0-SNAPSHOT)
 
 A modern, scalable Automated Quality Assurance framework combining API and UI testing capabilities. This project
 showcases best practices for test automation framework architecture, with a focus on maintainability, readability, and
@@ -271,6 +271,10 @@ This framework demonstrates several best practices for test automation:
 
 ### Short-term Goals
 
+- [x] Implement Allure reporting
+- [x] Implement common subproject structure
+- [x] Implement Spotless code formatting
+- [x] Implement TestContainers support
 - [ ] Complete API testing framework for all endpoints
 - [ ] Implement data-driven testing with external data sources
 - [ ] Add contract testing capabilities
@@ -279,7 +283,7 @@ This framework demonstrates several best practices for test automation:
 ### Medium-term Goals
 
 - [ ] Add UI testing module using Selenide
-- [ ] Implement parallel test execution with improved reporting
+- [x] Implement parallel test execution with improved reporting
 - [ ] Add performance testing capabilities
 - [x] Integrate with CI/CD pipelines (GitHub Actions)
 - [ ] Add publishing Allure report as GitHub Pages (GitHub Actions)
