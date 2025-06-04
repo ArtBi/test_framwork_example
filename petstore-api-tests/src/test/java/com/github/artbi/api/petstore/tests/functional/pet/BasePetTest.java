@@ -36,8 +36,7 @@ public class BasePetTest extends BaseTest {
     @Step("Initialize pet payload with random data")
     protected void initializePetPayload() {
         PetPayload payload = PetPayload.builder().id(getFaker().random().nextInt(1, 100000))
-                .name(getFaker().funnyName().name())
-                .category(PetPayload.Category.builder().id(1).name("Dogs").build())
+                .name(getFaker().funnyName().name()).category(PetPayload.Category.builder().id(1).name("Dogs").build())
                 .photoUrls(Collections.singletonList("https://example.com/photo.jpg"))
                 .tags(Collections.singletonList(PetPayload.Tag.builder().id(1).name("friendly").build()))
                 .status(PetStatus.AVAILABLE).build();
@@ -50,7 +49,6 @@ public class BasePetTest extends BaseTest {
         }
         return petPayloadThreadLocal.get();
     }
-
 
     @Step("Create a new pet")
     protected PetCreationResponse createPet(PetPayload petPayload) {
