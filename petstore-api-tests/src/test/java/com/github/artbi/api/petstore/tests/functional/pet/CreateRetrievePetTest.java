@@ -1,5 +1,6 @@
 package com.github.artbi.api.petstore.tests.functional.pet;
 
+import com.github.artbi.api.petstore.model.payloads.PetPayload;
 import com.github.artbi.api.petstore.model.responses.PetCreationResponse;
 import com.github.artbi.common.assertions.AssertableResponse;
 import io.qameta.allure.Description;
@@ -26,7 +27,8 @@ public class CreateRetrievePetTest extends BasePetTest {
     @TmsLink("C2072")
     @Severity(SeverityLevel.CRITICAL)
     public void testCreateAndGetPet() {
-        PetCreationResponse createdPet = createPet();
+        PetPayload payload = getPetPayload();
+        PetCreationResponse createdPet = createPet(payload);
 
         log.info("Getting pet by ID: {}", createdPet.getId());
         AssertableResponse getResponse = petApiService.getPetById(createdPet.getId());

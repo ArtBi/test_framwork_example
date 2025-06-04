@@ -1,5 +1,6 @@
 package com.github.artbi.api.petstore.tests.functional.pet;
 
+import com.github.artbi.api.petstore.model.payloads.PetPayload;
 import com.github.artbi.api.petstore.model.responses.PetCreationResponse;
 import com.github.artbi.common.assertions.AssertableResponse;
 import io.qameta.allure.Description;
@@ -25,7 +26,8 @@ public class UpdatePetTest extends BasePetTest {
     @Severity(SeverityLevel.NORMAL)
     public void testUpdatePetStatus() {
         log.info("Creating a new pet");
-        PetCreationResponse createdPet = createPet();
+        PetPayload payload = getPetPayload();
+        PetCreationResponse createdPet = createPet(payload);
 
         String newStatus = "sold";
         log.info("Updating pet status to: {}", newStatus);

@@ -1,5 +1,6 @@
 package com.github.artbi.api.petstore.tests.functional.pet;
 
+import com.github.artbi.api.petstore.model.payloads.PetPayload;
 import com.github.artbi.common.assertions.AssertableResponse;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
@@ -22,7 +23,8 @@ public class DeletePetTest extends BasePetTest {
     @Severity(SeverityLevel.CRITICAL)
     public void testDeletePet() {
         log.info("Creating a new pet");
-        Integer petId = createPet().getId();
+        PetPayload payload = getPetPayload();
+        Integer petId = createPet(payload).getId();
 
         log.info("Deleting pet with ID: {}", petId);
         AssertableResponse deleteResponse = petApiService.deletePet(petId);

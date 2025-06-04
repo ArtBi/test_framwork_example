@@ -14,7 +14,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  api-tests:
+  tests:
     runs-on: ubuntu-latest
     
     steps:
@@ -44,10 +44,6 @@ jobs:
         uses: EnricoMi/publish-unit-test-result-action@v2
         with:
           files: "petstore-api-tests/build/test-results/test/TEST-*.xml"
-
-      #      - name: Generate Allure Report
-      #        if: always()
-      #        run: ./gradlew allureReport
 
       - name: Load test report history
         uses: actions/checkout@v3

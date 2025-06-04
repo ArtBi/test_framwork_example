@@ -21,6 +21,8 @@ import static org.hamcrest.text.IsEmptyString.emptyOrNullString;
 @Slf4j
 public class BasePetTest extends BaseTest {
 
+    private final ThreadLocal<PetPayload> petPayloadThreadLocal = new ThreadLocal<>();
+
     protected PetApiService petApiService;
     protected PetPayload petPayload;
 
@@ -29,21 +31,29 @@ public class BasePetTest extends BaseTest {
         log.info("@BeforeClass: Setting up BasePetTest");
         petApiService = new PetApiService();
         log.info("PetApiService initialized");
-        initializePetPayload();
-        log.info("Pet payload initialized");
     }
 
     @Step("Initialize pet payload with random data")
     protected void initializePetPayload() {
-        petPayload = PetPayload.builder().id(getFaker().random().nextInt(1, 100000)).name(getFaker().funnyName().name())
+        PetPayload payload = PetPayload.builder().id(getFaker().random().nextInt(1, 100000))
+                .name(getFaker().funnyName().name())
                 .category(PetPayload.Category.builder().id(1).name("Dogs").build())
                 .photoUrls(Collections.singletonList("https://example.com/photo.jpg"))
                 .tags(Collections.singletonList(PetPayload.Tag.builder().id(1).name("friendly").build()))
                 .status(PetStatus.AVAILABLE).build();
+        petPayloadThreadLocal.set(payload);
     }
 
+    protected PetPayload getPetPayload() {
+        if (petPayloadThreadLocal.get() == null) {
+            initializePetPayload();
+        }
+        return petPayloadThreadLocal.get();
+    }
+
+
     @Step("Create a new pet")
-    protected PetCreationResponse createPet() {
+    protected PetCreationResponse createPet(PetPayload petPayload) {
         return petApiService.createPet(petPayload).shouldHave(statusCode(200))
                 .shouldHave(contentType("application/json")).shouldHave(bodyField("id", not(emptyOrNullString())))
                 .shouldHave(bodyField("name", equalTo(petPayload.getName())))
