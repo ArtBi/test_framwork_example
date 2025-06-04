@@ -1,6 +1,3 @@
-/*
- * Copyright (c) 2025
- */
 package com.github.artbi.api.petstore.tests.functional.pet;
 
 import com.github.artbi.api.petstore.model.enums.PetStatus;
@@ -29,8 +26,11 @@ public class BasePetTest extends BaseTest {
 
     @BeforeClass(alwaysRun = true)
     public void setUp() {
+        log.info("@BeforeClass: Setting up BasePetTest");
         petApiService = new PetApiService();
+        log.info("PetApiService initialized");
         initializePetPayload();
+        log.info("Pet payload initialized");
     }
 
     @Step("Initialize pet payload with random data")

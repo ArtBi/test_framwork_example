@@ -1,6 +1,3 @@
-/*
- * Copyright (c) 2025
- */
 package com.github.artbi.api.petstore.config;
 
 import com.github.artbi.common.config.BaseConfig;

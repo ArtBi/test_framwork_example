@@ -1,6 +1,3 @@
-/*
- * Copyright (c) 2025
- */
 package com.github.artbi.api.petstore.model.enums;
 
 import com.fasterxml.jackson.annotation.JsonValue;

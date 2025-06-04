@@ -1,6 +1,3 @@
-/*
- * Copyright (c) 2025
- */
 package com.github.artbi.common.config;
 
 import org.aeonbits.owner.Config;

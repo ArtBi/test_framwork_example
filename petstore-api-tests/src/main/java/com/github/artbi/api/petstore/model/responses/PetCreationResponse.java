@@ -1,6 +1,3 @@
-/*
- * Copyright (c) 2025
- */
 package com.github.artbi.api.petstore.model.responses;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
