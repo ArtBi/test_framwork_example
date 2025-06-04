@@ -1,4 +1,4 @@
-rootProject.name = 'petclinic-api-automation'
+rootProject.name = 'test_framwork_example'
 
 include 'common'
 include 'petstore-api-tests'

@@ -1,17 +1,47 @@
-# API Testing Framework Template
+# Comprehensive AQA Framework
 
-A comprehensive template for API testing using Java, REST Assured, and TestNG. This project provides a structured
-approach to API testing with a focus on the Swagger Petstore API as an example.
+A modern, scalable Automated Quality Assurance framework combining API and UI testing capabilities. This project
+showcases best practices for test automation framework architecture, with a focus on maintainability, readability, and
+extensibility.
 
-## Features
+## Framework Overview
 
+This framework represents a collection of best practices and approaches from professional QA automation experience,
+designed to provide:
+
+- **Comprehensive Testing**: Combined API and UI test automation in a single framework
 - **Modular Architecture**: Clean separation of concerns with service, model, and test layers
-- **Fluent Assertions**: Custom assertion mechanism for readable test validations
-- **Docker Integration**: TestContainers support for isolated testing environments
-- **Configurable**: Environment-specific configuration with property files
-- **Reporting**: Allure reports for comprehensive test results visualization
-- **Logging**: Detailed logging with Logback
-- **Data Generation**: Realistic test data generation with JavaFaker
+- **Flexible Configuration**: Environment-specific settings with property files
+- **Robust Reporting**: Integrated reporting with Allure and TestRail
+- **Containerization**: Isolated testing environments with Docker and TestContainers
+- **CI/CD Integration**: Ready-to-use GitHub Actions workflows
+- **Data Management**: Realistic test data generation and management
+
+## Key Features
+
+### API Testing
+
+- **REST Assured Integration**: Fluent API for HTTP requests and responses
+- **Custom Assertions**: Domain-specific assertions for readable validations
+- **Contract Testing**: Verify API contracts and schemas (planned)
+- **Performance Testing**: Basic load and performance testing capabilities (planned)
+
+### UI Testing (planned)
+
+- **Selenide Implementation**: Concise and stable UI test automation (planned)
+- **Page Object Pattern**: Maintainable page abstractions (planned)
+- **Cross-Browser Testing**: Support for multiple browsers (planned)
+- **Playwright Integration**: Modern browser automation (planned)
+- **Visual Testing**: Screenshot comparison capabilities (planned)
+
+### Framework Infrastructure
+
+- **TestRail Integration**: Automatic test case synchronization and result reporting
+- **Allure Reporting**: Rich test execution reports with screenshots and logs
+- **Docker Support**: Containerized test environments
+- **Parallel Execution**: Optimized test execution speed
+- **Data Factories**: Flexible test data generation
+- **Configuration Management**: Environment-specific settings
 
 ## Tech Stack
 
@@ -19,38 +49,67 @@ approach to API testing with a focus on the Swagger Petstore API as an example.
 - Gradle 8.5+
 - TestNG 7.9.0
 - REST Assured 5.4.0
+- Selenide 6.x (planned)
 - Allure 2.25.0
 - Logback 1.4.14
 - TestContainers 1.19.7
 - JavaFaker 1.0.2
+- Playwright (planned)
 
 ## Project Structure
 
 ```
 .
-├── automation/
-│   ├── common/                # Common utilities and shared code
-│   └── petstore-api-tests/    # API tests for Petstore API
-│       ├── src/
-│       │   ├── main/
-│       │   │   ├── java/
-│       │   │   │   └── com/petclinic/api/
-│       │   │   │       ├── assertions/     # Custom assertion classes
-│       │   │   │       ├── conditions/     # Test conditions
-│       │   │   │       ├── model/          # Data models and DTOs
-│       │   │   │       ├── service/        # API service clients
-│       │   │   │       └── ProjectConfig.java  # Configuration
-│       │   │   └── resources/
-│       │   │       ├── config.properties   # Configuration properties
-│       │   │       └── logback.xml         # Logging configuration
-│       │   └── test/
-│       │       ├── java/
-│       │       │   └── com/petclinic/api/
-│       │       │       ├── containers/     # TestContainers setup
-│       │       │       └── tests/          # Test classes
-│       │       └── resources/
-│       │           └── testng.xml          # TestNG configuration
-└── docs/                      # Documentation
+├── common/                      # Common utilities and shared code
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/
+│   │   │   │   └── com/github/artbi/common/
+│   │   │   │       ├── assertions/     # Custom assertion classes
+│   │   │   │       ├── conditions/     # Test conditions
+│   │   │   │       ├── config/         # Base configuration
+│   │   │   │       └── service/        # Base service classes
+├── api-tests/                   # API testing module
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/
+│   │   │   │   └── com/github/artbi/api/
+│   │   │   │       ├── model/          # API data models
+│   │   │   │       ├── service/        # API service clients
+│   │   │   │       └── config/         # API configuration
+│   │   │   └── resources/
+│   │   │       ├── config.properties   # Configuration properties
+│   │   │       └── logback.xml         # Logging configuration
+│   │   └── test/
+│   │       ├── java/
+│   │       │   └── com/github/artbi/api/
+│   │       │       ├── containers/     # TestContainers setup
+│   │       │       └── tests/          # API test classes
+│   │       └── resources/
+│   │           └── testng.xml          # TestNG configuration
+├── ui-tests/                    # UI testing module (planned)
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/
+│   │   │   │   └── com/github/artbi/ui/
+│   │   │   │       ├── pages/          # Page objects
+│   │   │   │       ├── components/     # Reusable UI components
+│   │   │   │       └── config/         # UI configuration
+│   │   └── test/
+│   │       ├── java/
+│   │       │   └── com/github/artbi/ui/
+│   │       │       └── tests/          # UI test classes
+│   │       └── resources/
+│   │           └── testng.xml          # TestNG configuration
+├── testrail-integration/        # TestRail integration module (planned)
+│   ├── src/
+│   │   └── main/
+│   │       └── java/
+│   │           └── com/github/artbi/testrail/
+│   │               ├── client/         # TestRail API client
+│   │               ├── annotations/    # TestRail annotations
+│   │               └── listeners/      # TestNG listeners for TestRail
+└── docs/                        # Documentation
 ```
 
 ## Prerequisites
@@ -64,8 +123,8 @@ approach to API testing with a focus on the Swagger Petstore API as an example.
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/artbi/web_api_template.git
-cd web_api_template
+git clone https://github.com/artbi/test_framwork_example.git
+cd test_framwork_example
 ```
 
 ### Available Documentation
@@ -155,103 +214,65 @@ To generate and automatically open the report in your default browser:
 
 This starts a local web server and opens the report in your browser.
 
-#### Clean Reports
+## TestRail Integration (Planned)
 
-To clean previous Allure results before a new test run:
+The framework includes integration with TestRail for test case management and reporting:
 
-```bash
-./gradlew cleanAllureResults
+- Automatic test case synchronization
+- Test result reporting to TestRail
+- TestRail annotations for mapping tests to test cases
+- Custom TestNG listeners for TestRail integration
+
+To configure TestRail integration:
+
+1. Add TestRail credentials to your `.env` file:
+
+```
+TESTRAIL_URL=https://your-instance.testrail.io
+TESTRAIL_USERNAME=your_username
+TESTRAIL_API_KEY=your_api_key
 ```
 
-#### Enhancing Reports
-
-The framework uses Allure annotations to enhance reports:
-
-- `@Feature` - Group tests by feature
-- `@Story` - Define user stories within features
-- `@Description` - Add detailed test descriptions
-- `@Step` - Break down test steps for better visibility
-- `@Severity` - Mark test importance (BLOCKER, CRITICAL, NORMAL, MINOR, TRIVIAL)
-
-Example:
+2. Use TestRail annotations in your test classes:
 
 ```java
 @Test
-@Story("Create and Retrieve Pet")
-@Description("Test creating a new pet and then retrieving it by ID")
-@Severity(SeverityLevel.CRITICAL)
-public void testCreateAndGetPet() {
+@TestRailCase(id = "C12345")
+public void testExample() {
     // Test code
 }
 ```
 
-## Configuration Options
+## Best Practices Implemented
 
-| Parameter                     | Description                              | Default Value                |
-|-------------------------------|------------------------------------------|------------------------------|
-| `api.base.url`                | Base URL for the API                     | http://localhost:8080/api/v3 |
-| `logging.enabled`             | Enable/disable request/response logging  | true                         |
-| `testcontainers.enabled`      | Enable/disable TestContainers            | true                         |
-| `testcontainers.reuse.enable` | Enable container reuse between test runs | true                         |
+This framework demonstrates several best practices for test automation:
 
+### Architecture
 
-## Using .env for Local Secrets
+- **Separation of Concerns**: Clear separation between test data, test logic, and page/API objects
+- **Reusable Components**: Common functionality extracted into reusable components
+- **Configuration Management**: Externalized configuration for different environments
 
-This project supports using `.env` files for managing sensitive information locally:
+### Test Design
 
-1. Add the dotenv-java dependency to your project
-2. Create a `.env` file in your project root
-3. Add `.env` to your `.gitignore` file
-4. Create a `.env.example` file with the structure but without actual secrets
-5. Update `ProjectConfig` to load from both `.env` and `config.properties`
+- **Atomic Tests**: Each test verifies a single piece of functionality
+- **Independent Tests**: Tests can run in any order without dependencies
+- **Data-Driven Approach**: Tests use dynamic data generation
+- **Explicit Waits**: Smart waiting strategies instead of hard-coded sleeps
 
-For more details, see the [.env usage guide](docs/env-usage.md).
+### Code Quality
 
-## CI/CD with GitHub Actions
-
-This project includes GitHub Actions workflows for continuous integration and testing:
-
-- Automated test execution on push and pull requests
-- Parallel test execution for faster feedback
-- Allure report generation and publishing
-- Test results visualization in GitHub
-
-To use GitHub Actions:
-
-1. Push your changes to GitHub
-2. GitHub Actions will automatically run the tests
-3. View test results in the Actions tab
-4. Download Allure reports from the workflow artifacts
-
-For more details, see the [GitHub Actions guide](docs/github-actions.md).
-
-## Code Formatting with Spotless
-
-This project uses Spotless for code formatting and style enforcement:
-
-- Google Java Format for Java files
-- Consistent formatting for Gradle, XML, and Markdown files
-- Automatic format checking during builds
-- IDE integration support
-
-To use Spotless:
-
-```bash
-# Check formatting without making changes
-./gradlew spotlessCheck
-
-# Apply formatting to all files
-./gradlew spotlessApply
-```
-
-For more details, see the [Spotless guide](docs/spotless.md).
+- **Code Formatting**: Consistent code style with Spotless
+- **Logging**: Comprehensive logging for troubleshooting
+- **Documentation**: Well-documented code and framework usage
+- **Version Control**: Proper branching and commit strategies
 
 ## Roadmap
 
 ### Short-term Goals
 
-- [ ] Add more comprehensive test coverage for all Petstore API endpoints
-- [ ] Implement data-driven testing data sources
+- [ ] Complete API testing framework for all endpoints
+- [ ] Implement data-driven testing with external data sources
 - [ ] Add contract testing capabilities
 - [ ] Enhance error handling and reporting
 
@@ -261,7 +282,8 @@ For more details, see the [Spotless guide](docs/spotless.md).
 - [ ] Implement parallel test execution with improved reporting
 - [ ] Add performance testing capabilities
 - [x] Integrate with CI/CD pipelines (GitHub Actions)
-- [ ] Integrate with additional CI/CD pipelines (Jenkins)
+- [ ] Add publishing Allure report as GitHub Pages (GitHub Actions)
+- [ ] Implement TestRail integration
 
 ### Long-term Goals
 
