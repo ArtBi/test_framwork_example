@@ -161,4 +161,10 @@ task cleanAllureResults(type: Delete) {
 
     delete fileTree(dir: 'build/allure-results')
     delete fileTree(dir: 'build/allure-report')
+
+    // Clean Allure results from all subprojects
+    subprojects.each { project ->
+        delete fileTree(dir: "${project.buildDir}/allure-results")
+        delete fileTree(dir: "${project.buildDir}/allure-report")
+    }
 }

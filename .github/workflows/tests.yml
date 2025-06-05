@@ -8,15 +8,16 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   issues: read
   checks: write
   pull-requests: write
+  pages: write
 
 jobs:
   tests:
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v3
 
@@ -36,14 +37,25 @@ jobs:
       - name: Check Code Format
         run: ./gradlew spotlessCheck
 
+      - name: Clean Allure Results
+        run: ./gradlew cleanAllureResults
+
       - name: Run API Tests
         run: ./gradlew apiTests
 
-      - name: Publish API Test Results
+      - name: Publish Test Results
         if: (!cancelled())
         uses: EnricoMi/publish-unit-test-result-action@v2
         with:
-          files: "petstore-api-tests/build/test-results/test/TEST-*.xml"
+          files: "**/build/test-results/**/TEST-*.xml"
+
+      - name: Collect Allure Results
+        if: always()
+        run: |
+          mkdir -p build/allure-results
+          find . -path "*/build/allure-results" -type d -not -path "./build/allure-results" | while read dir; do
+            cp -r "$dir"/* build/allure-results/ || true
+          done
 
       - name: Load test report history
         uses: actions/checkout@v3
@@ -68,4 +80,3 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: allure-history
-
