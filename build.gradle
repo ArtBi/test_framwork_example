@@ -4,6 +4,8 @@ plugins {
     id 'com.diffplug.spotless' version '6.25.0'
 }
 
+// Apply Spotless configuration from external file
+apply from: 'spotless.gradle'
 
 allprojects {
     group = 'io.artbi.aqa.templates'
@@ -24,7 +26,7 @@ ext {
     logbackVersion = '1.4.14'
     assertjVersion = '3.25.3'
     testngVersion = '7.9.0'
-    allureVersion = '2.29.1'
+    allureVersion = '2.24.0'
     jacksonVersion = '2.18.2'
     hamcrestVersion = '2.2'
     jsonVersion = '20231013'
@@ -54,14 +56,8 @@ subprojects {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    spotless {
-        java {
-            googleJavaFormat()
-            removeUnusedImports()
-            trimTrailingWhitespace()
-            endWithNewline()
-        }
-    }
+    // Apply Spotless configuration from external file
+    apply from: rootProject.file('spotless.gradle')
 
     dependencies {
         // API Testing
@@ -165,4 +161,10 @@ task cleanAllureResults(type: Delete) {
 
     delete fileTree(dir: 'build/allure-results')
     delete fileTree(dir: 'build/allure-report')
+
+    // Clean Allure results from all subprojects
+    subprojects.each { project ->
+        delete fileTree(dir: "${project.buildDir}/allure-results")
+        delete fileTree(dir: "${project.buildDir}/allure-report")
+    }
 }
