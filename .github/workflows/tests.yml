@@ -46,6 +46,13 @@ jobs:
 
       - name: Run API Tests
         run: ./gradlew apiTests
+        env:
+          testrail.enabled: ${{ secrets.TESTRAIL_ENABLED || 'false' }}
+          testrail.url: ${{ secrets.TESTRAIL_URL }}
+          testrail.username: ${{ secrets.TESTRAIL_USERNAME }}
+          testrail.apiKey: ${{ secrets.TESTRAIL_API_KEY }}
+          testrail.projectId: ${{ secrets.TESTRAIL_PROJECT_ID || '1' }}
+          testrail.suiteId: ${{ secrets.TESTRAIL_SUITE_ID || '1' }}
 
       - name: Publish Test Results
         if: (!cancelled())
@@ -86,4 +93,3 @@ jobs:
           publish_branch: gh-pages
           publish_dir: allure-history
           force_orphan: true
-

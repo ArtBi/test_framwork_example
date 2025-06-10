@@ -67,8 +67,9 @@ designed to provide:
 │   │   │   │   └── com/github/artbi/common/
 │   │   │   │       ├── assertions/     # Custom assertion classes
 │   │   │   │       ├── conditions/     # Test conditions
-│   │   │   │       ├── config/         # Base configuration
-│   │   │   │       └── service/        # Base service classes
+│   │   │   │       ├── config/         # Base configuration including TestRail config
+│   │   │   │       ├── service/        # Base service classes including TestRail service
+│   │   │   │       └── listeners/      # TestNG listeners including TestRail listener
 ├── api-tests/                   # API testing module
 │   ├── src/
 │   │   ├── main/
@@ -101,14 +102,6 @@ designed to provide:
 │   │       │       └── tests/          # UI test classes
 │   │       └── resources/
 │   │           └── testng.xml          # TestNG configuration
-├── testrail-integration/        # TestRail integration module (planned)
-│   ├── src/
-│   │   └── main/
-│   │       └── java/
-│   │           └── com/github/artbi/testrail/
-│   │               ├── client/         # TestRail API client
-│   │               ├── annotations/    # TestRail annotations
-│   │               └── listeners/      # TestNG listeners for TestRail
 └── docs/                        # Documentation
 ```
 
@@ -135,6 +128,7 @@ This directory contains documentation for various aspects of the project:
 - [Environment Variables Usage](docs/env-usage.md) - Guide for using .env files for local secrets
 - [GitHub Actions](docs/github-actions.md) - Information about CI/CD with GitHub Actions
 - [Spotless Code Formatting](docs/spotless.md) - Guide for using Spotless for code formatting
+- [TestRail Integration](docs/testrail-integration.md) - Guide for using TestRail integration for test reporting
 
 ### Environment Setup
 
@@ -214,34 +208,40 @@ To generate and automatically open the report in your default browser:
 
 This starts a local web server and opens the report in your browser.
 
-## TestRail Integration (Planned)
+## TestRail Integration
 
 The framework includes integration with TestRail for test case management and reporting:
 
-- Automatic test case synchronization
-- Test result reporting to TestRail
-- TestRail annotations for mapping tests to test cases
+- Automatic test result reporting to TestRail
+- Test case mapping using `@TmsLink` annotations
 - Custom TestNG listeners for TestRail integration
+- Configurable through properties or environment variables
 
 To configure TestRail integration:
 
-1. Add TestRail credentials to your `.env` file:
+1. Add TestRail credentials to your environment or properties:
 
-```
-TESTRAIL_URL=https://your-instance.testrail.io
-TESTRAIL_USERNAME=your_username
-TESTRAIL_API_KEY=your_api_key
+```properties
+testrail.enabled=true
+testrail.url=https://your-instance.testrail.io
+testrail.username=your_username
+testrail.apiKey=your_api_key
+testrail.projectId=1
+testrail.suiteId=1
 ```
 
-2. Use TestRail annotations in your test classes:
+2. Use `@TmsLink` annotations in your test classes:
 
 ```java
 @Test
-@TestRailCase(id = "C12345")
+@TmsLink("C12345")
 public void testExample() {
     // Test code
 }
 ```
+
+For detailed information about TestRail integration, see
+the [TestRail Integration Documentation](docs/testrail-integration.md).
 
 ## Best Practices Implemented
 
@@ -287,7 +287,7 @@ This framework demonstrates several best practices for test automation:
 - [ ] Add performance testing capabilities
 - [x] Integrate with CI/CD pipelines (GitHub Actions)
 - [ ] Add publishing Allure report as GitHub Pages (GitHub Actions)
-- [ ] Implement TestRail integration
+- [x] Implement TestRail integration
 
 ### Long-term Goals
 

@@ -34,6 +34,7 @@ ext {
     ownerVersion = '1.0.12'
     javaFakerVersion = '1.0.2'
     testcontainersVersion = '1.19.7'
+    testRailCliVersion = '1.0.1'
 }
 
 allure {
@@ -84,7 +85,7 @@ subprojects {
         // Test reports
         implementation "io.qameta.allure:allure-bom:${allureVersion}"
         implementation "io.qameta.allure:allure-testng:${allureVersion}"
-        implementation "io.qameta.allure:allure-rest-assured:${allureVersion}"
+        implementation "io.qameta.allure:allure-rest-assured"
 
         // Data generation
         implementation "com.github.javafaker:javafaker:${javaFakerVersion}"
@@ -120,6 +121,12 @@ project(':common') {
 
         // Configuration
         implementation "org.aeonbits.owner:owner:${ownerVersion}"
+
+        // TestRail CLI
+        implementation "com.codepine.api:testrail-api-java-client:${testRailCliVersion}"
+
+        // TestNG for listeners
+        implementation "org.testng:testng:${testngVersion}"
     }
 }
 
@@ -132,6 +139,9 @@ project(':petstore-api-tests') {
 
         // Configuration
         implementation "org.aeonbits.owner:owner:${ownerVersion}"
+
+        // TestRail CLI
+        implementation "com.codepine.api:testrail-api-java-client:${testRailCliVersion}"
     }
 
     // Add task for running API tests only

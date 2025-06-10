@@ -1,5 +1,10 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="Petstore API Test Suite" verbose="1" parallel="tests" thread-count="1">
+    <!-- TestRail Listener for reporting test results to TestRail -->
+    <listeners>
+        <listener class-name="com.github.artbi.common.listeners.TestRailListener"/>
+    </listeners>
+
     <test name="Smoke API Tests" verbose="1" parallel="classes" thread-count="2">
         <groups>
             <run>
