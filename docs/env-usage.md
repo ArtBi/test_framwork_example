@@ -57,8 +57,7 @@ This file can be committed to the repository to show other developers what envir
 
 Update your `ProjectConfig` class to load from both `.env` and `config.properties`:
 
-```java
-package com.petclinic.api;
+```javapackage com.petclinic.api;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import org.aeonbits.owner.Config;
