@@ -84,11 +84,11 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: allure-history
+          publish_dir: allure-history/${{ github.ref_name }}
           force_orphan: true
 
       - name: Upload Allure report as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: allure-report
