@@ -26,13 +26,18 @@ public class CreateRetrievePetTest extends BasePetTest {
     @Description("Test creating a new pet and then retrieving it by ID")
     @TmsLink("C2072")
     @Severity(SeverityLevel.CRITICAL)
-    public void testCreateAndGetPet() {
+    public void shouldCreateAndRetrievePetWithCorrectDetails() {
+        // Given
         PetPayload payload = getPetPayload();
-        PetCreationResponse createdPet = createPet(payload);
 
+        // When
+        PetCreationResponse createdPet = createPet(payload);
         log.info("Getting pet by ID: {}", createdPet.getId());
         AssertableResponse getResponse = petApiService.getPetById(createdPet.getId());
-        getResponse.shouldHave(statusCode(200)).shouldHave(contentType("application/json"))
+
+        // Then
+        getResponse.shouldHave(statusCode(200))
+                .shouldHave(contentType("application/json"))
                 .shouldHave(bodyField("id", equalTo(createdPet.getId())))
                 .shouldHave(bodyField("name", equalTo(createdPet.getName())))
                 .shouldHave(bodyField("status", equalTo(createdPet.getStatus().getValue())))
