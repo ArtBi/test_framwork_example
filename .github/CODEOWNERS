@@ -1,0 +1,21 @@
+# This is a CODEOWNERS file for GitHub
+# It defines who is responsible for code in the repository
+# Format: file_pattern @user_or_team
+# For more information, see: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owners for everything in the repo
+* @artbi
+
+# Owners for specific directories
+/common/ @artbi
+/petstore-api-tests/ @artbi
+/config/ @artbi
+/docs/ @artbi
+
+# Owners for specific file types
+*.java @artbi
+*.gradle @artbi
+*.yml @artbi
+
+# Owners for GitHub workflows
+/.github/workflows/ @artbi
