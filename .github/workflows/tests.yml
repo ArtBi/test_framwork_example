@@ -64,7 +64,7 @@ jobs:
 
       - name: Load test report history
         uses: actions/checkout@v3
-        if: always()
+        if: always() && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
         continue-on-error: true
         with:
           ref: gh-pages
@@ -79,11 +79,18 @@ jobs:
           allure_results: build/allure-results
 
       - name: Publish test report
-        uses: peaceiris/actions-gh-pages@v3
-        if: always()
+        uses: peaceiris/actions-gh-pages@v4
+        if: always() && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
           publish_dir: allure-history
           force_orphan: true
 
+      - name: Upload Allure report as artifact
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: allure-report
+          path: allure-history
+          retention-days: 30
