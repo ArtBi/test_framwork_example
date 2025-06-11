@@ -24,18 +24,24 @@ public class UpdatePetTest extends BasePetTest {
     @Story("Update Pet Status")
     @Description("Test updating a pet's status and verifying the change")
     @Severity(SeverityLevel.NORMAL)
-    public void testUpdatePetStatus() {
+    public void shouldUpdatePetStatusAndReturnUpdatedDetails() {
+        // Given
         log.info("Creating a new pet");
         PetPayload payload = getPetPayload();
         PetCreationResponse createdPet = createPet(payload);
-
         String newStatus = "sold";
+
+        // When
         log.info("Updating pet status to: {}", newStatus);
         AssertableResponse updateResponse = petApiService.updatePetStatus(createdPet, newStatus);
-        updateResponse.shouldHave(statusCode(200)).shouldHave(contentType("application/json"));
+
+        // Then
+        updateResponse.shouldHave(statusCode(200))
+                .shouldHave(contentType("application/json"));
 
         log.info("Verifying updated pet status");
         AssertableResponse getResponse = petApiService.getPetById(createdPet.getId());
-        getResponse.shouldHave(statusCode(200)).shouldHave(bodyField("status", equalTo(newStatus)));
+        getResponse.shouldHave(statusCode(200))
+                .shouldHave(bodyField("status", equalTo(newStatus)));
     }
 }
